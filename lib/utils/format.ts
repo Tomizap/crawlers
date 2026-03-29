@@ -27,7 +27,7 @@ export const formatPhone = (phone: string) => {
     return phone
         .trim()
         .replace(/^\+33/, '0')
-        .replaceAll(/\D/, '');
+        .replaceAll(/\D/g, '');
 }
 
 export const formatSiret = (siret: string) => {
@@ -40,9 +40,10 @@ export const formatEmail = (email: string) => {
     return formatted
 }
 
-export const formatCompany = (company: Company) => {
+export const formatCompany = (company: Partial<Company>) => {
     if (company.email) company.email = formatEmail(company.email);
     if (company.phone) company.phone = formatPhone(company.phone);
     if (company.siret) company.siret = formatSiret(company.siret);
+    if (company.website_url) company.website_url = formatUrl(company.website_url);
     return company;
 }

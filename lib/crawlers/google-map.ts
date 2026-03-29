@@ -7,7 +7,7 @@ import { Company } from "../types/company.js";
 import { searchCompanyData } from "../utils/search.js";
 import { GoogleCrawler } from "./google.js";
 import { Page } from "puppeteer";
-import { formatPhone, formatUrl, formatAddress } from "../utils/format.js";
+import { formatPhone, formatUrl, formatAddress, formatCompany } from "../utils/format.js";
 
 export class GoogleMapCrawler extends GoogleCrawler {
 
@@ -133,7 +133,7 @@ export class GoogleMapCrawler extends GoogleCrawler {
                                 }
 
                                 const mainTag = await subPage.$$('[role="main"]').then(ms => ms[-1] || ms[0])
-                                company = {
+                                company = formatCompany({
                                     ...company,
                                     name: await mainTag.$eval('h1', el => el.textContent),
                                     phone: await mainTag.$eval(
@@ -143,7 +143,7 @@ export class GoogleMapCrawler extends GoogleCrawler {
                                     website_url: await mainTag.$eval('[data-item-id="authority"] .fontBodyMedium', el => el.textContent).catch(_ => null),
                                     address: await mainTag.$eval('[data-item-id="address"] .fontBodyMedium', el => el.textContent).catch(_ => null),
                                     sector: await mainTag.$eval('button.DkEaL ,[jsaction="pane.wfvdle18.category"]', el => el.textContent).catch(_ => null),
-                                }
+                                })
 
                                 await searchCompanyData(company)
 
