@@ -33,6 +33,7 @@ export class GoogleMapCrawler extends GoogleCrawler {
 
                 try {
 
+                    console.log('Crawling URL:', url)
                     page = await subCrawler.newPage(url)
 
                     await page.waitForSelector('div[role="feed"]')
@@ -95,7 +96,7 @@ export class GoogleMapCrawler extends GoogleCrawler {
         while (this.urlsToCrawl.length > 0) {
 
             const subCrawlerSingle = new GoogleMapCrawler({ headless: this.headless, name: "Single" })
-            subCrawlerSingle.queue = new PQueue({ concurrency: 5, interval: 5000, intervalCap: 1 })
+            subCrawlerSingle.queue = new PQueue({ concurrency: 7, interval: 5000, intervalCap: 1 })
             await subCrawlerSingle.newPage(urls[0])
             await subCrawlerSingle.acceptCookies()
             await subCrawlerSingle.page?.close()
