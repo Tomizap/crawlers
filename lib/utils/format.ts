@@ -1,3 +1,5 @@
+import { Company } from "../types/company.js"
+
 export const formatString = (str = '') => {
     return str.trim().replace(/\s+/g, '')
 }
@@ -22,10 +24,10 @@ export const formatUrl = (url = "") => {
 }
 
 export const formatPhone = (phone = "") => {
-    let formatted = phone.trim().replace(/\s+/g, '').replace(/[\.\-]/g, '');
-    if (formatted.startsWith('+33')) {
-        formatted = '0' + formatted.slice(3);
-    }
+    let formatted = phone
+        .trim()
+        .replace(/^\+33/, '0')
+        .replaceAll(/\D/g, '');
     return formatted;
 }
 
@@ -37,4 +39,11 @@ export const formatSiret = (siret = '') => {
 export const formatEmail = (email = '') => {
     let formatted = formatString(email).replace('mailto:', "")
     return formatted
+}
+
+export const formatCompany = (company: Company) => {
+    if (company.email) company.email = formatEmail(company.email);
+    if (company.phone) company.phone = formatPhone(company.phone);
+    if (company.siret) company.siret = formatSiret(company.siret);
+    return company;
 }
