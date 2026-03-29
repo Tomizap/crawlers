@@ -523,8 +523,8 @@ export async function searchCompanyData(company: Partial<Company>): Promise<Part
     }
 
     // 8. contacts → dirigeants avec prénom/nom + enrichissement company via Pappers
-    const contacts = await searchCompanyContacts(company)
-    console.log('contacts:', contacts)
+    // const contacts = await searchCompanyContacts(company)
+    // console.log('contacts:', contacts)
 
     // 9. enriched_at
     company.enriched_at = new Date()

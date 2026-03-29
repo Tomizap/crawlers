@@ -1,8 +1,10 @@
+import { Company } from "../types/company.js"
+
 export const formatString = (str = '') => {
     return str.trim().replace(/\s+/g, '')
 }
 
-export const formatAddress = (address = "") => {
+export const formatAddress = (address: string) => {
     return {
         adresse: address.trim(),
         street_address: address.trim().split(',')[0]?.trim() || "",
@@ -13,7 +15,7 @@ export const formatAddress = (address = "") => {
     }
 }
 
-export const formatUrl = (url = "") => {
+export const formatUrl = (url: string) => {
     let formatted = url.trim();
     if (!formatted.match(/^https?:\/\//)) {
         formatted = "https://" + formatted;
@@ -21,20 +23,26 @@ export const formatUrl = (url = "") => {
     return formatted;
 }
 
-export const formatPhone = (phone = "") => {
-    let formatted = phone.trim().replace(/\s+/g, '').replace(/[\.\-]/g, '');
-    if (formatted.startsWith('+33')) {
-        formatted = '0' + formatted.slice(3);
-    }
-    return formatted;
+export const formatPhone = (phone: string) => {
+    return phone
+        .trim()
+        .replace(/^\+33/, '0')
+        .replaceAll(/\D/, '');
 }
 
-export const formatSiret = (siret = '') => {
+export const formatSiret = (siret: string) => {
     let formatted = siret.trim().replace(/\s+/g, '').replace(/[\.\-]/g, '');
     return formatted
 }
 
-export const formatEmail = (email = '') => {
+export const formatEmail = (email: string) => {
     let formatted = formatString(email).replace('mailto:', "")
     return formatted
+}
+
+export const formatCompany = (company: Company) => {
+    if (company.email) company.email = formatEmail(company.email);
+    if (company.phone) company.phone = formatPhone(company.phone);
+    if (company.siret) company.siret = formatSiret(company.siret);
+    return company;
 }
