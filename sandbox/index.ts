@@ -204,9 +204,9 @@ const batteryB2BKeywords = shuffleArray([
     "distributeur batteries B2B",
     "fournisseur batteries industriel",
     "importateur batteries Europe",
-    "wholesale battery distributor",
-    "bulk battery supplier",
-    "battery distributor Europe",
+    // "wholesale battery distributor",
+    // "bulk battery supplier",
+    // "battery distributor Europe",
 
     // 🏭 Industrie / OEM
     // "fabricant équipement batterie",
@@ -228,7 +228,7 @@ const batteryB2BKeywords = shuffleArray([
     // "fleet battery management company",
 
     // 🚗 Automobile B2B (attention → filtrer les petits garages)
-    "distributeur pièces moto batteri   e grossiste",
+    "distributeur pièces moto batterie grossiste",
     "centrale achat pièces moto",
     "moto parts wholesaler battery",
     "pièces détachées moto grossiste",
@@ -239,9 +239,9 @@ const batteryB2BKeywords = shuffleArray([
     // "batterie poids lourd fournisseur",
 
     // 🔋 Lithium / tech avancée
-    "fournisseur batterie lithium B2B",
-    "battery lithium distributor Europe",
-    "industrial lithium battery supplier",
+    // "fournisseur batterie lithium B2B",
+    // "battery lithium distributor Europe",
+    // "industrial lithium battery supplier",
 
     // ♻️ Reconditionnement (souvent gros volumes)
     // "reconditionnement batterie industriel",
@@ -254,7 +254,8 @@ const urls = []
 const GoogleCrawler = new GoogleMapCrawler(config)
 for (const keyword of batteryB2BKeywords) {
     for (const location of frenchDepartments) {
-        urls.push(`https://www.google.com/maps/search/${encodeURIComponent(keyword.replaceAll(' ', '+'))}+${encodeURIComponent(location.replaceAll(' ', '+'))}`)
+        urls.push(`https://www.google.com/maps/search/${keyword.replaceAll(' ', '+')}+${location.replaceAll(' ', '+')}`)
+        // urls.push(`https://www.google.com/maps/search/${encodeURIComponent(keyword.replaceAll(' ', '+'))}+${encodeURIComponent(location.replaceAll(' ', '+'))}`)
     }
 }
 

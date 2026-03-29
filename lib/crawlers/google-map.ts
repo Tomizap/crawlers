@@ -7,6 +7,7 @@ import { Company } from "../types/company.js";
 import { searchCompanyData } from "../utils/search.js";
 import { GoogleCrawler } from "./google.js";
 import { Page } from "puppeteer";
+import { formatPhone, formatUrl, formatAddress } from "../utils/format.js";
 
 export class GoogleMapCrawler extends GoogleCrawler {
 
@@ -33,7 +34,7 @@ export class GoogleMapCrawler extends GoogleCrawler {
 
                 try {
 
-                    console.log('Crawling URL:', url)
+                    // console.log('Crawling URL:', url)
                     page = await subCrawler.newPage(url)
 
                     await page.waitForSelector('div[role="feed"]')
@@ -41,7 +42,7 @@ export class GoogleMapCrawler extends GoogleCrawler {
                     let maxSameCount = 0
                     for (let index = 0; index < 30; index++) {
 
-                        await sleepRandom()
+                        await sleepRandom(500, 1000)
 
                         await page.evaluate(() => {
                             document.querySelector('div[role="feed"]')?.scrollBy(0, 99999);
@@ -60,11 +61,14 @@ export class GoogleMapCrawler extends GoogleCrawler {
 
                         if (hrefs.length === 0) {
                             maxSameCount++
-                            console.log('Same last item count:'.yellow, maxSameCount);
+                            // console.log('Same last item count:'.yellow, maxSameCount);
                         } else {
                             maxSameCount = 0;
                         }
-                        if (maxSameCount > 10) break
+                        if (maxSameCount > 10) {
+                            console.log('Max same item count reached'.red, url)
+                            break
+                        }
 
                         if (await page.$('[role="feed"] p.fontBodyMedium') !== null) break
 
@@ -96,7 +100,7 @@ export class GoogleMapCrawler extends GoogleCrawler {
         while (this.urlsToCrawl.length > 0) {
 
             const subCrawlerSingle = new GoogleMapCrawler({ headless: this.headless, name: "Single" })
-            subCrawlerSingle.queue = new PQueue({ concurrency: 7, interval: 5000, intervalCap: 1 })
+            subCrawlerSingle.queue = new PQueue({ concurrency: 5, interval: 5000, intervalCap: 1 })
             await subCrawlerSingle.newPage(urls[0])
             await subCrawlerSingle.acceptCookies()
             await subCrawlerSingle.page?.close()
@@ -106,13 +110,15 @@ export class GoogleMapCrawler extends GoogleCrawler {
                 subCrawlerSingle.queue.add(async () => {
 
                     let company: Partial<Company> = {}
-
-                    if (!!!subCrawlerSingle.browser) return;
-
-                    const subPage = await subCrawlerSingle.newPage();
-                    if (!!!subPage) return;
+                    let subPage: Page | null = null
 
                     try {
+
+                        subPage = await subCrawlerSingle.newPage().catch(() => {
+                            console.log('Error creating subPage', url)
+                            return null
+                        });
+                        if (!subPage) return;
 
                         await withTimeout(
                             (async () => {
@@ -130,9 +136,12 @@ export class GoogleMapCrawler extends GoogleCrawler {
                                 company = {
                                     ...company,
                                     name: await mainTag.$eval('h1', el => el.textContent),
-                                    phone: await mainTag.$eval('[data-tooltip="Copier le numéro de téléphone"] .fontBodyMedium', el => el.textContent.replace(/[a-zA-Z\s\.\-]/gi, '')).catch(_ => null),
+                                    phone: await mainTag.$eval(
+                                        '[data-tooltip="Copier le numéro de téléphone"] .fontBodyMedium',
+                                        el => el.textContent.replace(/[a-zA-Z\s\.\-]/gi, '').replace('+33', '0')
+                                    ).catch(_ => null),
                                     website_url: await mainTag.$eval('[data-item-id="authority"] .fontBodyMedium', el => el.textContent).catch(_ => null),
-                                    address: await mainTag.$eval('[data-item-id="address"] .fontBodyMedium', el => el.textContent),
+                                    address: await mainTag.$eval('[data-item-id="address"] .fontBodyMedium', el => el.textContent).catch(_ => null),
                                     sector: await mainTag.$eval('button.DkEaL ,[jsaction="pane.wfvdle18.category"]', el => el.textContent).catch(_ => null),
                                 }
 
