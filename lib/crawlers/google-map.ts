@@ -90,14 +90,20 @@ export class GoogleMapCrawler extends GoogleCrawler {
 
         }
 
+        subCrawler.queue.onIdle().then(() => {
+            subCrawler.browser?.close().catch(() => {
+                console.log('error to close subCrawler browser')
+            })
+        })
+
         while (this.urlsToCrawl.length === 0) {
             console.log('Waiting for URLs to crawl...')
             await sleep(3000)
         }
 
-        console.log(this.urlsToCrawl.length, 'URLs to crawl')
-
         while (this.urlsToCrawl.length > 0) {
+
+            console.log(this.urlsToCrawl.length, 'URLs to crawl')
 
             const subCrawlerSingle = new GoogleMapCrawler({ headless: this.headless, name: "Single" })
             subCrawlerSingle.queue = new PQueue({ concurrency: 5, interval: 5000, intervalCap: 1 })

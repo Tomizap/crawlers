@@ -146,6 +146,9 @@ export const regexExcludeEmail = [
     "@ac-versailles.fr",
     "@google",
 
+    "email.com",
+    "xxx.xxx",
+
     // specific
     "contact@luxecodemenagement.com",
     'info@bpmgroup.fr',

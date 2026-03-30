@@ -216,10 +216,10 @@ const batteryB2BKeywords = shuffleArray([
     // "custom battery manufacturer",
 
     // ⚡ Énergie / stockage
-    "stockage énergie batterie entreprise",
-    "battery energy storage system supplier",
-    "fournisseur batterie solaire professionnel",
-    "installateur stockage énergie industriel",
+    // "stockage énergie batterie entreprise",
+    // "battery energy storage system supplier",
+    // "fournisseur batterie solaire professionnel",
+    // "installateur stockage énergie industriel",
 
     // 🚚 Logistique / manutention
     // "batterie chariot élévateur fournisseur",
