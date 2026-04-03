@@ -1,5 +1,5 @@
 import { GoogleMapCrawler } from '../lib/crawlers/google-map.js'
-import { shuffleArray } from "../lib/utils/utils.js";
+import { shuffleArray } from "../packages/utils/utils.js";
 
 const config = {
     headless: false,
@@ -228,10 +228,10 @@ const batteryB2BKeywords = shuffleArray([
     // "fleet battery management company",
 
     // 🚗 Automobile B2B (attention → filtrer les petits garages)
-    "distributeur pièces moto batterie grossiste",
-    "centrale achat pièces moto",
-    "moto parts wholesaler battery",
-    "pièces détachées moto grossiste",
+    // "distributeur pièces moto batterie grossiste",
+    // "centrale achat pièces moto",
+    // "moto parts wholesaler battery",
+    // "pièces détachées moto grossiste",
 
     // ⚙️ BTP / engins / heavy duty
     // "batterie engins chantier fournisseur",

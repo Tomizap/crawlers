@@ -1,5 +1,6 @@
 
-import Crawler, { CrawlerConfig } from "./crawler.js";
+import { CrawlerConfig } from "../types/crawler.js";
+import Crawler from "./crawler.js";
 import { Page } from "puppeteer";
 
 export class GoogleCrawler extends Crawler {

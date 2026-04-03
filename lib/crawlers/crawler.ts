@@ -1,13 +1,9 @@
 import 'colors'
 import UserAgent from "user-agents";
 import PQueue from 'p-queue';
-import puppeteer from '../config/puppeteer.js';
+import puppeteer from '../../packages/config/puppeteer.js';
 import { Browser, Page } from 'puppeteer';
-
-export type CrawlerConfig = {
-    name?: string,
-    headless?: boolean
-}
+import { CrawlerConfig } from '../types/crawler.js';
 
 class Crawler {
 
