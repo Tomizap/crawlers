@@ -1,3 +1,3 @@
-[submodule "lib/config"]
-	path = lib/config
-	url = git@github.com:Tomizap/tzdc-backend-config.git
+[submodule "packages"]
+	path = packages
+	url = https://github.com/Tomizap/tzdc-node-packages.git
