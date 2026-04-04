@@ -1,13 +1,14 @@
 import PQueue from "p-queue";
-import { CrawlerConfig } from "./crawler.js";
 import { sleep, sleepRandom } from "../../packages/utils/sleep.js";
 import { saveItem } from "../../packages/utils/save.js";
 import { withTimeout } from "../../packages/utils/utils.js";
-import { Company } from "../types/company.js";
-import { searchCompanyData } from "../../packages/utils/search.js";
+import { Company } from "../../packages/types/company.js";
 import { GoogleCrawler } from "./google.js";
 import { Page } from "puppeteer";
-import { formatPhone, formatUrl, formatAddress, formatCompany } from "../../packages/utils/format.js";
+import { formatCompany } from "../../packages/utils/format.js";
+import { CrawlerConfig } from "../types/crawler.js";
+import { searchCompanyData, searchCompanyContacts } from "../../packages/search/company.js";
+import { searchContactData } from "../../packages/search/contact.js";
 
 export class GoogleMapCrawler extends GoogleCrawler {
 
@@ -101,6 +102,8 @@ export class GoogleMapCrawler extends GoogleCrawler {
             await sleep(3000)
         }
 
+        const subQueue = new PQueue({ concurrency: 3 })
+
         while (this.urlsToCrawl.length > 0) {
 
             console.log(this.urlsToCrawl.length, 'URLs to crawl')
@@ -151,14 +154,39 @@ export class GoogleMapCrawler extends GoogleCrawler {
                                     sector: await mainTag.$eval('button.DkEaL ,[jsaction="pane.wfvdle18.category"]', el => el.textContent).catch(_ => null),
                                 })
 
-                                await searchCompanyData(company)
+                                company = await searchCompanyData(company)
 
-                                console.log("Crawled Gmap Place:".green, company);
+                                company = await saveItem(company, {
+                                    debug: true
+                                })
 
-                                await saveItem(company)
+                                // 8. contacts → dirigeants avec prénom/nom + enrichissement company
+                                if (company.siren) {
+                                    subQueue.add(async () => {
+                                        try {
+
+                                            const contacts = await searchCompanyContacts(company, {
+                                                // debug: true
+                                            })
+                                            // console.log('contacts:', contacts)
+
+                                            for (const contact of contacts) {
+                                                await saveItem(await searchContactData(contact, company), {
+                                                    'type': "contacts",
+                                                    debug: true
+                                                })
+                                            }
+
+                                        } catch (error) {
+
+                                            console.log('Error occurred while searching for company contacts')
+
+                                        }
+                                    })
+                                }
 
                             })(),  // toute la logique dans une fonction
-                            60000,
+                            120000,
                             url
                         )
 
@@ -193,6 +221,8 @@ export class GoogleMapCrawler extends GoogleCrawler {
         await subCrawler.browser?.close().catch(() => {
             console.log('error to close subCrawler browser')
         })
+
+        await subQueue.onIdle()
 
     }
 
