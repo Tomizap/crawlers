@@ -1,6 +1,6 @@
 import PQueue from "p-queue";
 import { sleep, sleepRandom } from "../../packages/utils/sleep.js";
-import { saveItem } from "../../packages/utils/save.js";
+import { saveItem } from "../../packages/crud/save.js";
 import { withTimeout } from "../../packages/utils/utils.js";
 import { Company } from "../../packages/types/company.js";
 import { GoogleCrawler } from "./google.js";
@@ -154,36 +154,7 @@ export class GoogleMapCrawler extends GoogleCrawler {
                                     sector: await mainTag.$eval('button.DkEaL ,[jsaction="pane.wfvdle18.category"]', el => el.textContent).catch(_ => null),
                                 })
 
-                                company = await searchCompanyData(company)
-
-                                company = await saveItem(company, {
-                                    debug: true
-                                })
-
-                                // 8. contacts → dirigeants avec prénom/nom + enrichissement company
-                                if (company.siren) {
-                                    subQueue.add(async () => {
-                                        try {
-
-                                            const contacts = await searchCompanyContacts(company, {
-                                                // debug: true
-                                            })
-                                            // console.log('contacts:', contacts)
-
-                                            for (const contact of contacts) {
-                                                await saveItem(await searchContactData(contact, company), {
-                                                    'type': "contacts",
-                                                    debug: true
-                                                })
-                                            }
-
-                                        } catch (error) {
-
-                                            console.log('Error occurred while searching for company contacts')
-
-                                        }
-                                    })
-                                }
+                                await searchCompanyData(company)
 
                             })(),  // toute la logique dans une fonction
                             120000,

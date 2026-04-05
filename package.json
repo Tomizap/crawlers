@@ -7,7 +7,9 @@
     "build": "tsc",
     "setup": "bash bin/setup.sh",
     "sandbox": "tsx sandbox/index.ts",
-    "sandbox:search": "tsx sandbox/search.ts"
+    "sandbox:search": "tsx sandbox/search.ts",
+    "sandbox:combine-items": "tsx sandbox/combine-items.ts",
+    "sandbox:enrich-items": "tsx sandbox/enrich-items.ts"
   },
   "keywords": [],
   "author": "",
@@ -26,6 +28,7 @@
     "email-validator-ultimate": "^1.0.4",
     "email-verifier": "^0.0.1",
     "got": "^14.6.6",
+    "lodash": "^4.18.1",
     "mongodb": "^6.8.0",
     "mongoose": "^8.5.3",
     "ollama": "^0.6.3",
@@ -59,6 +62,7 @@
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/helmet": "^0.0.48",
+    "@types/lodash": "^4.17.24",
     "@types/morgan": "^1.9.10",
     "@types/nodemailer": "^7.0.11",
     "@types/stripe": "^8.0.416",
