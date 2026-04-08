@@ -1,9 +1,9 @@
 import 'colors'
 import UserAgent from "user-agents";
 import PQueue from 'p-queue';
-import puppeteer from '../../packages/config/puppeteer.js';
 import { Browser, Page } from 'puppeteer';
 import { CrawlerConfig } from '../types/crawler.js';
+import { newBrowser, newPage } from '../../packages/lib/utils/browser.js';
 
 class Crawler {
 
@@ -45,37 +45,7 @@ class Crawler {
 
             if (this.browser) await this.browser.close().catch(() => { })
 
-            this.browser = await puppeteer.launch({
-                headless: this.headless,
-                protocolTimeout: 60000,
-                // executablePath: executablePath(),
-                args: [
-                    '--no-sandbox',
-                    '--disable-setuid-sandbox',
-                    '--disable-dev-shm-usage',
-                    '--disable-blink-features=AutomationControlled', // ← clé principale
-                    '--disable-infobars',
-                    '--disable-notifications',
-                    '--window-size=1366,768',
-                    '--start-maximized',
-                    '--disable-features=IdentityConsistency,AutofillEnableAccountWalletStorage,GoogleOneTapDesktop',
-                    // '--disable-gpu',  ← retirer si possible, c'est un signal
-                    // '--enable-automation', ← SUPPRIMER, c'est un flag détectable !
-                ],
-                defaultViewport: { width: 1366, height: 768 },
-                ...opts
-            });
-
-            const context = this.browser.defaultBrowserContext();
-            await context.overridePermissions('https://www.pagesjaunes.fr', [
-                // Liste vide = tout refuser, y compris les notifications
-            ]);
-            await context.overridePermissions('https://www.google.com', [
-                // Liste vide = tout refuser, y compris les notifications
-            ]);
-            await context.overridePermissions('https://labonnealternance.apprentissage.beta.gouv.fr', [
-                // Liste vide = tout refuser, y compris les notifications
-            ]);
+            this.browser = await newBrowser(opts)
 
             return this
 
@@ -97,35 +67,7 @@ class Crawler {
                 throw new Error('Failed to create new browser')
             }
 
-            const page = await this.browser.newPage();
-
-            // Masquer navigator.webdriver
-            await page.evaluateOnNewDocument(() => {
-                Object.defineProperty(navigator, 'webdriver', {
-                    get: () => undefined,
-                });
-
-                // Simuler des plugins réalistes
-                Object.defineProperty(navigator, 'plugins', {
-                    get: () => [1, 2, 3, 4, 5],
-                });
-
-                // Langue cohérente
-                Object.defineProperty(navigator, 'languages', {
-                    get: () => ['fr-FR', 'fr', 'en-US', 'en'],
-                });
-            });
-
-            // User-Agent réaliste
-            await page.setUserAgent(
-                new UserAgent({ deviceCategory: 'desktop' }).toString()
-                //     // 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'
-            );
-
-            // Headers cohérents
-            await page.setExtraHTTPHeaders({
-                'Accept-Language': 'fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7',
-            });
+            const page = await newPage({ browser: this.browser })
 
             if (url) { await page.goto(url, { waitUntil: 'networkidle2' }) }
 

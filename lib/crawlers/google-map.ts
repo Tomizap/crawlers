@@ -1,14 +1,12 @@
 import PQueue from "p-queue";
-import { sleep, sleepRandom } from "../../packages/utils/sleep.js";
-import { saveItem } from "../../packages/crud/save.js";
-import { withTimeout } from "../../packages/utils/utils.js";
-import { Company } from "../../packages/types/company.js";
 import { GoogleCrawler } from "./google.js";
 import { Page } from "puppeteer";
-import { formatCompany } from "../../packages/utils/format.js";
 import { CrawlerConfig } from "../types/crawler.js";
-import { searchCompanyData, searchCompanyContacts } from "../../packages/search/company.js";
-import { searchContactData } from "../../packages/search/contact.js";
+import { searchCompanyData } from "../../packages/lib/search/company.js";
+import { Company } from "../../packages/lib/types/company.js";
+import { formatCompany } from "../../packages/lib/utils/format.js";
+import { sleepRandom, sleep } from "../../packages/lib/utils/sleep.js";
+import { withTimeout } from "../../packages/lib/utils/utils.js";
 
 export class GoogleMapCrawler extends GoogleCrawler {
 

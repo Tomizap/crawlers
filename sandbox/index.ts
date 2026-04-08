@@ -5,7 +5,7 @@ const config = {
     headless: false,
 }
 
-
+// keyword playground
 const keywords = shuffleArray([
     // Commerce / Vente
     "magasin prêt à porter",
@@ -80,7 +80,72 @@ const keywords = shuffleArray([
     "back office",
     "gestion administrative"
 ]);
-const locations = shuffleArray([
+const keywordsCfa = shuffleArray([
+    "centre de formation alternance",
+    "école alternance",
+    "formation en alternance",
+    "centre de formation professionnelle",
+    "CFA privé",
+    "école privée alternance",
+    "organisme de formation",
+    "centre de formation continue",
+    "école commerce alternance",
+    "école marketing alternance"
+])
+const batteryB2BKeywords = shuffleArray([
+
+    // 🔥 Distribution / Grossistes (TOP PRIORITÉ)
+    "grossiste batteries professionnel",
+    "distributeur batteries B2B",
+    "fournisseur batteries industriel",
+    "importateur batteries Europe",
+    // "wholesale battery distributor",
+    // "bulk battery supplier",
+    // "battery distributor Europe",
+
+    // 🏭 Industrie / OEM
+    // "fabricant équipement batterie",
+    // "intégrateur solutions batterie",
+    // "OEM battery supplier",
+    // "battery pack manufacturer B2B",
+    // "custom battery manufacturer",
+
+    // ⚡ Énergie / stockage
+    // "stockage énergie batterie entreprise",
+    // "battery energy storage system supplier",
+    // "fournisseur batterie solaire professionnel",
+    // "installateur stockage énergie industriel",
+
+    // 🚚 Logistique / manutention
+    // "batterie chariot élévateur fournisseur",
+    // "forklift battery supplier",
+    // "batterie flotte véhicules entreprise",
+    // "fleet battery management company",
+
+    // 🚗 Automobile B2B (attention → filtrer les petits garages)
+    // "distributeur pièces moto batterie grossiste",
+    // "centrale achat pièces moto",
+    // "moto parts wholesaler battery",
+    // "pièces détachées moto grossiste",
+
+    // ⚙️ BTP / engins / heavy duty
+    // "batterie engins chantier fournisseur",
+    // "heavy equipment battery supplier",
+    // "batterie poids lourd fournisseur",
+
+    // 🔋 Lithium / tech avancée
+    // "fournisseur batterie lithium B2B",
+    // "battery lithium distributor Europe",
+    // "industrial lithium battery supplier",
+
+    // ♻️ Reconditionnement (souvent gros volumes)
+    // "reconditionnement batterie industriel",
+    // "battery refurbishment company B2B",
+    // "battery recycling industrial partner"
+]);
+
+// locations playground
+const locationsIdf = shuffleArray([
     // Paris
     "Paris 8e 75008",
     "Paris 9e 75009",
@@ -197,63 +262,12 @@ const frenchDepartments = shuffleArray([
     "89 Yonne", "90 Territoire de Belfort", "91 Essonne", "92 Hauts-de-Seine",
     "93 Seine-Saint-Denis", "94 Val-de-Marne", "95 Val-d'Oise",
 ]);
-const batteryB2BKeywords = shuffleArray([
-
-    // 🔥 Distribution / Grossistes (TOP PRIORITÉ)
-    "grossiste batteries professionnel",
-    "distributeur batteries B2B",
-    "fournisseur batteries industriel",
-    "importateur batteries Europe",
-    // "wholesale battery distributor",
-    // "bulk battery supplier",
-    // "battery distributor Europe",
-
-    // 🏭 Industrie / OEM
-    // "fabricant équipement batterie",
-    // "intégrateur solutions batterie",
-    // "OEM battery supplier",
-    // "battery pack manufacturer B2B",
-    // "custom battery manufacturer",
-
-    // ⚡ Énergie / stockage
-    // "stockage énergie batterie entreprise",
-    // "battery energy storage system supplier",
-    // "fournisseur batterie solaire professionnel",
-    // "installateur stockage énergie industriel",
-
-    // 🚚 Logistique / manutention
-    // "batterie chariot élévateur fournisseur",
-    // "forklift battery supplier",
-    // "batterie flotte véhicules entreprise",
-    // "fleet battery management company",
-
-    // 🚗 Automobile B2B (attention → filtrer les petits garages)
-    // "distributeur pièces moto batterie grossiste",
-    // "centrale achat pièces moto",
-    // "moto parts wholesaler battery",
-    // "pièces détachées moto grossiste",
-
-    // ⚙️ BTP / engins / heavy duty
-    // "batterie engins chantier fournisseur",
-    // "heavy equipment battery supplier",
-    // "batterie poids lourd fournisseur",
-
-    // 🔋 Lithium / tech avancée
-    // "fournisseur batterie lithium B2B",
-    // "battery lithium distributor Europe",
-    // "industrial lithium battery supplier",
-
-    // ♻️ Reconditionnement (souvent gros volumes)
-    // "reconditionnement batterie industriel",
-    // "battery refurbishment company B2B",
-    // "battery recycling industrial partner"
-]);
 
 // urls
 const urls = []
 const GoogleCrawler = new GoogleMapCrawler(config)
-for (const keyword of batteryB2BKeywords) {
-    for (const location of frenchDepartments) {
+for (const keyword of keywordsCfa) {
+    for (const location of locationsIdf) {
         urls.push(`https://www.google.com/maps/search/${keyword.replaceAll(' ', '+')}+${location.replaceAll(' ', '+')}`)
         // urls.push(`https://www.google.com/maps/search/${encodeURIComponent(keyword.replaceAll(' ', '+'))}+${encodeURIComponent(location.replaceAll(' ', '+'))}`)
     }
