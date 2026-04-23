@@ -149,7 +149,7 @@ export class GoogleMapCrawler extends GoogleCrawler {
                                     ).catch(_ => null),
                                     website_url: await mainTag.$eval('[data-item-id="authority"] .fontBodyMedium', el => el.textContent).catch(_ => null),
                                     address: await mainTag.$eval('[data-item-id="address"] .fontBodyMedium', el => el.textContent).catch(_ => null),
-                                    sector: await mainTag.$eval('button.DkEaL ,[jsaction="pane.wfvdle18.category"]', el => el.textContent).catch(_ => null),
+                                    sector: await mainTag.$eval('button.DkEaL ,[jsaction="pane.wfvdle18.category"],.mgr77e', el => el.textContent).catch(_ => null),
                                 })
 
                                 await searchCompanyData(company)

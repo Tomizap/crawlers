@@ -7,6 +7,7 @@
     "build": "tsc",
     "setup": "bash bin/setup.sh",
     "sandbox": "tsx sandbox/index.ts",
+    "sandbox:linkedin": "tsx sandbox/linkedin.ts",
     "sandbox:search": "tsx sandbox/search.ts",
     "sandbox:combine-items": "tsx sandbox/combine-items.ts",
     "sandbox:enrich-items": "tsx sandbox/enrich-items.ts"

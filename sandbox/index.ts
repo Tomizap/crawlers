@@ -1,8 +1,9 @@
 import { GoogleMapCrawler } from '../lib/crawlers/google-map.js'
-import { shuffleArray } from "../packages/utils/utils.js";
+import { LaBonneAlternanceCrawler } from '../lib/crawlers/labonnealternance.js'
+import { shuffleArray } from "../packages/lib/utils/utils.js";
 
 const config = {
-    headless: false,
+    headless: true,
 }
 
 // keyword playground
@@ -265,18 +266,18 @@ const frenchDepartments = shuffleArray([
 
 // urls
 const urls = []
-const GoogleCrawler = new GoogleMapCrawler(config)
-for (const keyword of keywordsCfa) {
-    for (const location of locationsIdf) {
-        urls.push(`https://www.google.com/maps/search/${keyword.replaceAll(' ', '+')}+${location.replaceAll(' ', '+')}`)
-        // urls.push(`https://www.google.com/maps/search/${encodeURIComponent(keyword.replaceAll(' ', '+'))}+${encodeURIComponent(location.replaceAll(' ', '+'))}`)
-    }
-}
 
 // --- Google Maps
-await GoogleCrawler.crawl(shuffleArray(urls))
-console.log("Crawl completed".green);
-await GoogleCrawler?.browser?.close()
+// const GoogleCrawler = new GoogleMapCrawler(config)
+// for (const keyword of ['hotel']) {
+//     for (const location of frenchDepartments) {
+//         urls.push(`https://www.google.com/maps/search/${keyword.replaceAll(' ', '+')}+${location.replaceAll(' ', '+')}`)
+//         // urls.push(`https://www.google.com/maps/search/${encodeURIComponent(keyword.replaceAll(' ', '+'))}+${encodeURIComponent(location.replaceAll(' ', '+'))}`)
+//     }
+// }
+// await GoogleCrawler.crawl(shuffleArray(urls))
+// console.log("Crawl completed".green);
+// await GoogleCrawler?.browser?.close()
 
 // --- Page jaunes
 // const PagesJaunesCrawler = new PagesJaunes(config);
@@ -285,6 +286,9 @@ await GoogleCrawler?.browser?.close()
 // await PagesJaunesCrawler.closeBrowser()
 
 // --- La bonne Alternance
-// const LaBonneAlternance = new LaBonneAlternanceCrawler(config);
-// await LaBonneAlternance.crawlJobs({ keywords, locations });
+const LaBonneAlternance = new LaBonneAlternanceCrawler(config);
+await LaBonneAlternance.crawlJobs({
+    keywords,
+    locations: locationsIdf
+});
 

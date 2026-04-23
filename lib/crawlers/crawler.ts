@@ -33,7 +33,9 @@ class Crawler {
         cookies: false,
     }
 
-    constructor(config: CrawlerConfig) {
+    credentials: any = {}
+
+    constructor(config?: CrawlerConfig) {
         Object.assign(this, config)
         return this
     }

@@ -1,5 +1,5 @@
-import { Company } from "../packages/types/company.js";
-import { searchCompanyContacts } from "../packages/search/company.js";
+import { Company } from "../packages/lib/types/company.js";
+import { searchCompanyContacts } from "../packages/lib/search/company.js";
 
 const company: Partial<Company> = {
     id: 1,
