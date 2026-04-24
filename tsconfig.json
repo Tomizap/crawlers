@@ -17,7 +17,8 @@
     },
     "include": [
         "lib",
-        "packages"
+        "packages",
+        "sandbox"
     ],
     "exclude": [
         "node_modules",
